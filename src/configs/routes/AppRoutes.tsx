@@ -8,12 +8,12 @@ import { Login } from "../../pages/Login";
 
 const router = createBrowserRouter([
   {
-    path: "/",
+    path: "/login",
     element: <Login />,
   },
   {
     path: "/",
-    element: <Navigate to={"/home"} />,
+    element: <Navigate to={"/login"} />,
   },
 ]);
 
