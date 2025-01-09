@@ -2,7 +2,7 @@ import { CssBaseline, CSSObject, GlobalStyles } from "@mui/material";
 
 const styles: Record<string, CSSObject> = {
   body: {
-    fontFamily: "",
+    fontFamily: "Open Sans, sans-serif",
   },
 };
 
