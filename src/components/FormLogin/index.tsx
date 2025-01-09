@@ -11,18 +11,34 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+
+interface ErrorFields {
+  email?: string;
+  password?: string;
+}
 
 export function FormLogin() {
   // Estado local
   const [showPassword, setShowPassword] = useState(false);
 
-  const [errors, setError] = useState<Record<string, string>>({});
+  const [errors, setError] = useState<ErrorFields>({
+    email: "",
+    password: "",
+  });
 
-  function isRequired(field: string) {
-    if (!field) {
-      setError((prev) => ({ ...prev, [field]: `${field} is required!` }));
+  function validate(email: string, password: string) {
+    if (!email) {
+      setError({ email: "Email is required!" });
+      return;
     }
+
+    if (!password) {
+      setError({ password: "Password is required!" });
+      return;
+    }
+
+    setError({});
   }
 
   function handleLogin(event: React.FormEvent<HTMLFormElement>) {
@@ -32,8 +48,14 @@ export function FormLogin() {
     const password = event.currentTarget.password.value;
     const remember = event.currentTarget["remember"].checked;
 
+    validate(email, password);
+
     console.log({ email, password, remember });
   }
+
+  useEffect(() => {
+    console.log(errors);
+  }, [errors]);
 
   return (
     <Grid2 container spacing={2} component={"form"} onSubmit={handleLogin}>
@@ -44,7 +66,7 @@ export function FormLogin() {
 
       {/* Campo de email */}
       <Grid2 size={12}>
-        <FormControl fullWidth>
+        <FormControl fullWidth error={!!errors.email}>
           <FormLabel id="email">Email address</FormLabel>
           <TextField
             id="email"
@@ -53,13 +75,15 @@ export function FormLogin() {
             placeholder="your@gmail.com"
             variant="outlined"
             fullWidth
+            error={!!errors.email}
+            helperText={errors.email}
           />
         </FormControl>
       </Grid2>
 
       {/* Campo de senha */}
       <Grid2 size={12}>
-        <FormControl fullWidth>
+        <FormControl fullWidth error={!!errors.password}>
           <FormLabel id="password">Password</FormLabel>
           <TextField
             id="password"
@@ -68,6 +92,8 @@ export function FormLogin() {
             placeholder="******"
             variant="outlined"
             fullWidth
+            error={!!errors.password}
+            helperText={errors.password}
             InputProps={{
               endAdornment: (
                 <InputAdornment position="end">
