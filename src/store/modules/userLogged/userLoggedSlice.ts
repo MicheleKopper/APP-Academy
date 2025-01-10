@@ -49,7 +49,9 @@ const userLoggedSlice = createSlice({
     },
 
     // Logout
-    logout() {},
+    logout() {
+      return initialState;
+    },
   },
 });
 
